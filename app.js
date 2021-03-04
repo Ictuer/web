@@ -20,6 +20,6 @@ Permission.id('hi')
 Permission.string('name')
 
 tasks(web)
-console.log(web.model('User').belongsTo("Node").__parent__.__parent__)
-console.log(view('test.ejs', {name: "Manh"}))
+web.model('User').belongsTo("Node").__parent__.__parent__.log()
+view('test.ejs', {name: "Manh"}).log()
 
