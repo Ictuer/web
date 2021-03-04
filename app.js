@@ -22,3 +22,5 @@ Permission.string('name')
 tasks(web)
 console.log(web.model('User').belongsTo("Node").__parent__.__parent__)
 console.log(view('test.ejs', {name: "Manh"}))
+
+console.log("done")
