@@ -3,9 +3,9 @@ require('./utils')
 
 var tasks = require('./tasks')
 
-const Web = require('./classes/Web')
+const Laravel = require('./classes/Laravel')
 
-var web = new Web('Laravel')
+var web = new Laravel('Laravel')
 
 var User = web.model('User')
 User.string('username').unique().length(30)

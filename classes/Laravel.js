@@ -1,6 +1,6 @@
 const Model = require('./Model')
 
-class Web {
+class Laravel {
     constructor(name) {
         this.__name__   = name
         this.__models__ = []
@@ -18,4 +18,4 @@ class Web {
 
 }
 
-module.exports = Web
+module.exports = Laravel

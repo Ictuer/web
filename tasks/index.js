@@ -1,6 +1,6 @@
-function run(web) {
+function run() {
     readDir(__dirname).forEach(f => {
-        f != 'index.js' && require(__dirname + '/' + f)(web)
+        f.endsWith(".js") && f != 'index.js' && require(__dirname + '/' + f)(...arguments)
     })
 }
 
