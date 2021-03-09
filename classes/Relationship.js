@@ -1,17 +1,16 @@
 class Relationship {
     constructor(model, parent) {
-        this.__type__  = this.constructor.name
-        this.__parent__ = parent
+        this.type  = this.constructor.name
+        this.parent = parent
         if(typeof model === 'string') {
-            model = this.__parent__.__parent__.model(model)
+            model = this.parent.parent.Model(model)
         }
-        this.__model__ = model
+        this.model = model
     }
 
-    isRelationship() {
+    IsRelationship() {
         return true
     }
-
 }
 
 module.exports = Relationship

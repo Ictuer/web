@@ -1,21 +1,57 @@
-const Model = require('./Model')
+const ExportAble = require("./ExportAble")
+const pluralize = require('pluralize')
 
 class Laravel {
     constructor(name) {
-        this.__name__   = name
-        this.__models__ = []
+        this.name   = name
+        this.output = __dirname + '/../output'
     }
 
-    model(name) {
-        let model = this.__models__.find(m => m.__name__ == name)
-        if(!model) {
-            model = new Model(name, this)
-            this.__models__.push(model)
-        }
-        return model
-    }
+    // Model(name) {
+    //     let model = this.models.find(m => m.name == name)
+    //     if(!model) {
+    //         model = new Model(name, this)
+    //         this.models.push(model)
+    //     }
+    //     return model
+    // }
 
+    // View(name) {
+
+    // }
+
+    // Controller(name) {
+
+    // }
+
+    // Migrate(name) {
+
+    // }
+
+    export() {
+        this.keys().filter(key => this[key][0] instanceof ExportAble)
+        .map(key => this[key])
+        .forEach(list => list.map(i => i.export()))
+    }
 
 }
+
+readDir(__dirname).filter(i => i != "Laravel.js").forEach(i => {
+    const className = i.replace(".js", "")
+    const classNames = pluralize(className.toLowerCase())
+    const clazz = require(__dirname + "/" + className)
+    if(clazz.prototype instanceof ExportAble) {
+        
+        Laravel.prototype[className] = function(name) {
+            this[classNames] = this[classNames] || []
+            let instance = this[classNames].find(m => m.name == name)
+            if(!instance) {
+                instance = new clazz(name, this)
+                this[classNames].push(instance)
+            }
+            return instance
+        }
+    }
+})
 
 module.exports = Laravel

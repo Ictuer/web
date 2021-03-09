@@ -1,12 +1,46 @@
 const fs = require('fs')
 const ejs = require('ejs')
 
+
+global.Log = function() {
+    var originalFunc = Error.prepareStackTrace;
+
+    var callerFile;
+    try {
+        var err = new Error();
+        var currentFile;
+        var currentLine;
+        var current
+
+        Error.prepareStackTrace = function (err, stack) { return stack; };
+        current = err.stack.shift()
+        currentFile = current.getFileName();
+        currentLine = current.getLineNumber();
+
+        while (err.stack.length) {
+            current = err.stack.shift()
+            callerFile = current.getFileName();
+            currentLine = current.getLineNumber();
+            if(currentFile !== callerFile) break;
+        }
+    } catch (e) {}
+
+    Error.prepareStackTrace = originalFunc; 
+    
+    if (process.env.DEBUG == "true") {
+        console.log(callerFile.split("/").pop().yellow.bold + `[${currentLine}]`.cyan, ...arguments)  
+    } else {
+        console.log(...arguments)
+    }
+     
+}
+
 fs.readdirSync(__dirname).forEach(f => {
     require(__dirname + '/' + f)
 })
 
 
-global.view = (path, data) => {
+global.render = (path, data) => {
     return ejs.render(fs.readFileSync(__dirname + '/../templates/' + path, 'utf-8'), data, {
         outputFunctionName: "echo",
         views: [__dirname + '/../templates/']

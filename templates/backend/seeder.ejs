@@ -1,0 +1,32 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+<%_root.model.where('skip', '==', false).forEach(model => {_%>
+use App\Models\<%=model.name%>;
+<%_})_%>
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        <%_root.model.where('skip', '==', false).forEach(model => {_%>
+        $<%=model.table%> = <%=model.name%>::factory(10)->create();
+        <%_})_%>
+        
+        <%_root.model.where('skip', '==', false).forEach(model => {_%>
+        <%_model.rel('belongsToMany').forEach(m => {_%>
+        <%=model.name%>::all()->each(function ($<%=model.lower%>) use ($<%=m.table%>){
+            $<%=model.lower%>-><%=m.table%>()->saveMany($<%=m.table%>);
+        });
+        <%_})_%>
+        <%_})_%>
+    }
+}

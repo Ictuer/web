@@ -7,19 +7,26 @@ const Laravel = require('./classes/Laravel')
 
 var web = new Laravel('Laravel')
 
-var User = web.model('User')
-User.string('username').unique().length(30)
-User.string('password')
-User.integer('age').notnull()
-User.datetime('created_at')
-User.datetime('updated_at')
-User.belongsTo('Node')
+var User = web.Model('User')
+User.String('username').Unique().Length(30)
+User.String('password')
+User.Integer('age').NotNull()
+User.DateTime('created_at')
+User.DateTime('updated_at')
+User.BelongsTo('Node')
 
-var Permission = web.model('Permission')
-Permission.id('hi')
-Permission.string('name')
+
+var Permission = web.Model('Permission')
+Permission.Id('hi')
+Permission.String('name')
+
+web.View("hahaha");
+
+
+({hi: '2222'}).log()
 
 tasks(web)
-web.model('User').belongsTo("Node").__parent__.__parent__.log()
-view('test.ejs', {name: "Manh"}).log()
+
+Log(30)
+Log(31)
 

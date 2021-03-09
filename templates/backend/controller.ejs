@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\<%=model.name%>;
+<%_model.prop.where('type', 'in', ['belongsToMany', 'belongsTo']).forEach(prop => {_%>
+use App\Models\<%=prop.model.name%>;
+<%_})_%>
+use Illuminate\Http\Request;
+
+class <%=model.name%>Controller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('admin.<%=model.lower%>.index', ['<%=model.table%>' => <%=model.name%>::all()]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {   
+        return view('admin.<%=model.lower%>.create', [<%-model.prop.where('type', 'in', ['belongsToMany', 'belongsTo']).map(prop => `'${prop.model.table}' => ${prop.model.name}::all()`).join(', ')-%>]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $<%-model.lower%> = <%-model.name%>::create($request->all());
+        <%_model.prop.where('type', '==', 'belongsToMany').forEach(prop => {_%>
+        $<%-model.lower%>-><%-prop.name%>()->sync($request->input('<%-prop.model.table%>', []));
+        <%_})_%>
+        return redirect()->route('<%-model.lower%>.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\<%=model.name%>  $<%=model.lower%>
+     * @return \Illuminate\Http\Response
+     */
+    public function show(<%=model.name%> $<%=model.lower%>)
+    {
+        return view('admin.<%=model.lower%>.show', ['<%=model.lower%>' => $<%=model.lower%>, <%-model.prop.where('type', 'in', ['belongsToMany']).map(prop => `'${prop.name.s()}' => ${prop.name.s(0).Ab()}::all()`).join(', ')-%>]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\<%=model.name%>  $<%=model.lower%>
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(<%=model.name%> $<%=model.lower%>)
+    {
+        return view('admin.<%=model.lower%>.edit', ['<%=model.lower%>' => $<%=model.lower%>, <%-model.prop.where('type', 'in', ['belongsToMany', 'belongsTo']).map(prop => `'${prop.model.table}' => ${prop.model.name}::all()`).join(', ')-%>]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\<%=model.name%>  $<%=model.lower%>
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, <%=model.name%> $<%=model.lower%>)
+    {
+        $<%-model.lower%>->update($request->all());
+        <%_model.prop.where('type', '==', 'belongsToMany').forEach(prop => {_%>
+        $<%-model.lower%>-><%-prop.model.table%>()->sync($request->input('<%-prop.model.table%>', []));
+        <%_})_%>
+        return redirect()->route('<%-model.lower%>.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\<%=model.name%>  $<%=model.lower%>
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(<%=model.name%> $<%=model.lower%>)
+    {
+        $<%=model.lower%>->delete();
+        return redirect()->back();
+    }
+}

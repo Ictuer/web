@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Models;
+
+<%_if(model.table == 'users') { _%>
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+<%_} else {_%>
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+<%_}_%>
+
+class <%=model.name%> extends <%if(model.table=='users') echo('Authenticatable'); else echo('Model');%>
+{
+    use HasFactory<%_if(model.table=='users') echo(', Notifiable')_%>;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        <%_model.prop.where('type', 'not in', ['id', 'belongsToMany', 'hasOne', 'hasMany']).forEach(prop => {_%>
+        "<%=prop.fillable%>",
+        <%_})_%>
+    ];
+
+    <%if(model.hidden.length > 0) {%>
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        <%model.hidden.forEach(i => {_%>
+        '<%=i%>',
+        <%_})_%>
+    ];
+    <%_}_%>
+    
+    public $timestamps = <%=model.timestamps?'true':'false'%>;
+
+    <%_model.rel('hasOne').forEach(m => {_%>
+    public function <%=m.lower%>()
+    {
+        return $this->hasOne('App\Models\<%=m.name%>');
+    }
+    <%_})_%>
+
+    <%_model.rel('hasMany').forEach(m => {_%>
+    public function <%=m.table%>()
+    {
+        return $this->hasMany('App\Models\<%=m.name%>');
+    }
+    <%_})_%>
+
+    <%_model.rel('belongsToMany').forEach(m => {_%>
+    public function <%=m.table%>()
+    {
+        return $this->belongsToMany('App\Models\<%=m.name%>', '<%=model.linkTo(m)%>', '<%=model.id%>', '<%=m.id%>');
+    }
+
+    <%_})_%>
+    <%_model.rel('belongsTo').forEach(m => {_%>
+    public function <%=m.lower%>()
+    {
+        return $this->belongsTo('App\Models\<%=m.name%>');
+    }
+    <%_})_%>
+}

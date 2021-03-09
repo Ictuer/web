@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class Create<%-model.table.Ab()-%>Table extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('<%=model.table%>', function (Blueprint $table) {
+            <%_model.prop.forEach(prop => {_%>
+            <%-prop.migrate%>
+            <%_})_%>
+            <%_model.rel('belongsTo').forEach(m => {_%>
+            $table->foreign('<%-m.id%>')->references('id')->on('<%-m.table%>')->onUpdate('CASCADE')->onDelete('CASCADE');
+            <%_})_%>
+            <%if(model.timestamps) echo('$table->timestamps();')%>
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('<%-model.table-%>');
+    }
+}

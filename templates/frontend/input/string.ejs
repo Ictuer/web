@@ -1,0 +1,6 @@
+<div class="col-12">
+                            <div class="form-group">
+                                <label for="name"><%-prop.root.name%></label>
+                                <input class="form-control" id="<%-prop.name%>" name="<%-prop.name%>" type="text" value="{{<%-prop.value%>??`old('<%-prop.name%>')`}}" placeholder="Enter your <%-prop.name%>" <%=from=='show'?'disabled':''%>>
+                            </div>
+                        </div>

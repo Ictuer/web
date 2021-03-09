@@ -1,28 +1,28 @@
 class Type {
     constructor(name) {
-        this.__name__ = name
-        this.__type__ = this.constructor.name
+        this.name = name
+        this.type = this.constructor.name
     }
 
-    name(name) {
-        this.__name__ = name
+    Name(name) {
+        this.name = name
     }
 
-    notnull() {
-        this.__notnull__ = true
+    NotNull() {
+        this.notnull = true
     }
 
-    unique() {
-        this.__unique__ = true
+    Unique() {
+        this.unique = true
         return this
     }
 
-    length(length = 255) {
-        this.__length__ = length
+    Length(length = 255) {
+        this.length = length
         return this
     }
 
-    isRelationship() {
+    IsRelationship() {
         return false
     }
 
