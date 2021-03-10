@@ -1,9 +1,9 @@
 const Relationship = require('../classes/Relationship')
 
-class BelongsTo extends Relationship {
+class BelongsToMany extends Relationship {
     constructor(model, parent) {
         super(model, parent)
     }
 }
 
-module.exports = BelongsTo
+module.exports = BelongsToMany

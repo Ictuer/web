@@ -9,7 +9,8 @@ class Type {
     }
 
     NotNull() {
-        this.notnull = true
+        this.notNull = true
+        return this
     }
 
     Unique() {
@@ -22,7 +23,12 @@ class Type {
         return this
     }
 
-    IsRelationship() {
+    Fillable() {
+        this.fillable = true
+        return this
+    }
+
+    isRelationship() {
         return false
     }
 

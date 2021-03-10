@@ -8,7 +8,7 @@ class Relationship {
         this.model = model
     }
 
-    IsRelationship() {
+    isRelationship() {
         return true
     }
 }

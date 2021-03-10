@@ -4,29 +4,8 @@ const pluralize = require('pluralize')
 class Laravel {
     constructor(name) {
         this.name   = name
-        this.output = __dirname + '/../output'
+        this.output = __dirname + '/../output/'
     }
-
-    // Model(name) {
-    //     let model = this.models.find(m => m.name == name)
-    //     if(!model) {
-    //         model = new Model(name, this)
-    //         this.models.push(model)
-    //     }
-    //     return model
-    // }
-
-    // View(name) {
-
-    // }
-
-    // Controller(name) {
-
-    // }
-
-    // Migrate(name) {
-
-    // }
 
     export() {
         this.keys().filter(key => this[key][0] instanceof ExportAble)
