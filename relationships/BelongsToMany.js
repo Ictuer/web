@@ -5,8 +5,8 @@ class BelongsToMany extends Relationship {
         super(model, parent)
     }
 
-    Pivot(name) {
-        this.pivot = this.parent.Model(name)
+    Pivot(model) {
+        this.pivot = this.parent.parent.Model(model)
         return this
     }
 }

@@ -13,6 +13,8 @@ User.BelongsToMany("Comment")
 
 User.Fillable(["username", "password", "age"])
 
+User.BelongsToMany("User").Pivot(User)
+
 web.export()
 
 

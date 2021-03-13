@@ -12,6 +12,11 @@ class Laravel {
     }
 
     Model(name) {
+        
+        if (name instanceof Model) {
+            return name
+        }
+
         let model = this.models.find(m => m.name == name)
         if(!model) {
             model = new Model(name, this)
