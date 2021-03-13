@@ -34,6 +34,39 @@ global.Log = function() {
      
 }
 
+global.Err = function() {
+    var originalFunc = Error.prepareStackTrace;
+
+    var callerFile;
+    try {
+        var err = new Error();
+        var currentFile;
+        var currentLine;
+        var current
+
+        Error.prepareStackTrace = function (err, stack) { return stack; };
+        current = err.stack.shift()
+        currentFile = current.getFileName();
+        currentLine = current.getLineNumber();
+
+        while (err.stack.length) {
+            current = err.stack.shift()
+            callerFile = current.getFileName();
+            currentLine = current.getLineNumber();
+            if(currentFile !== callerFile) break;
+        }
+    } catch (e) {}
+
+    Error.prepareStackTrace = originalFunc; 
+    
+    if (process.env.DEBUG == "true") {
+        console.log(callerFile.split("/").pop().replace(".js","").red.bold + `[${currentLine}]`.cyan, ...arguments)  
+    } else {
+        console.log(...arguments)
+    }
+     
+}
+
 fs.readdirSync(__dirname).forEach(f => {
     require(__dirname + '/' + f)
 })

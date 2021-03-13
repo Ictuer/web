@@ -1,3 +1,3 @@
-module.exports = function(web) {
+module.exports[-1] = function(web) {
     Log("hi")
 }
