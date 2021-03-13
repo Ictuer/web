@@ -1,14 +1,41 @@
 const fs = require('fs')
 const pluralize = require('pluralize')
-const ExportAble = require('./ExportAble')
 
-class Model extends ExportAble {
+class Model {
     constructor(name, parent) {
-        super()
         this.name = name
         this.parent = parent
         this.fields = []
         this.timestamps = true
+    }
+
+    Hidden(names) {
+        names.forEach(name => {
+            let field = this.fields.find(f => f.name === name)
+            if(field) {
+                field.Hidden()    
+            } else {
+                throw new Error("I do not know field " + name)
+            }
+        })
+        return this
+    }
+
+    Fillable(names) {
+        names.forEach(name => {
+            let field = this.fields.find(f => f.name === name)
+            if(field) {
+                if(!field.isRelationship()) {
+                    field.Fillable()    
+                } else {
+                    throw new Error("Can not add a relationship to fillable")
+                }
+                
+            } else {
+                throw new Error("I do not know field " + name)
+            }
+        })
+        return this
     }
 
     Timestamps() {

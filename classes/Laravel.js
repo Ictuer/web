@@ -1,36 +1,29 @@
-const ExportAble = require("./ExportAble")
-const pluralize = require('pluralize')
+require('dotenv').config()
+require('../utils')
+var tasks = require('../tasks')
+const Model = require('./Model')
+
 
 class Laravel {
     constructor(name) {
+        this.env = require("../config/default-env.js")
         this.name   = name
-        this.output = __dirname + '/../output/'
+        this.models = []
+    }
+
+    Model(name) {
+        let model = this.models.find(m => m.name == name)
+        if(!model) {
+            model = new Model(name, this)
+            this.models.push(model)
+        }
+        return model
     }
 
     export() {
-        this.keys().filter(key => this[key][0] instanceof ExportAble)
-        .map(key => this[key])
-        .forEach(list => list.map(i => i.export()))
+        tasks(this)
     }
 
 }
-
-readDir(__dirname).filter(i => i != "Laravel.js").forEach(i => {
-    const className = i.replace(".js", "")
-    const classNames = pluralize(className.toLowerCase())
-    const clazz = require(__dirname + "/" + className)
-    if(clazz.prototype instanceof ExportAble) {
-        
-        Laravel.prototype[className] = function(name) {
-            this[classNames] = this[classNames] || []
-            let instance = this[classNames].find(m => m.name == name)
-            if(!instance) {
-                instance = new clazz(name, this)
-                this[classNames].push(instance)
-            }
-            return instance
-        }
-    }
-})
 
 module.exports = Laravel

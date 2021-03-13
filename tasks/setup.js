@@ -1,3 +1,3 @@
 module.exports = function(web) {
-    // Log(web)
+    Log(web)
 }

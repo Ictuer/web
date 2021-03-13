@@ -28,7 +28,7 @@ global.Log = function() {
     Error.prepareStackTrace = originalFunc; 
     
     if (process.env.DEBUG == "true") {
-        console.log(callerFile.split("/").pop().yellow.bold + `[${currentLine}]`.cyan, ...arguments)  
+        console.log(callerFile.split("/").pop().replace(".js","").yellow.bold + `[${currentLine}]`.cyan, ...arguments)  
     } else {
         console.log(...arguments)
     }
@@ -44,7 +44,6 @@ global.render = (path, data) => {
     return ejs.render(fs.readFileSync(__dirname + '/../templates/' + path, 'utf-8'), data, {
         outputFunctionName: "echo",
         views: [__dirname + '/../templates/']
-
     })
 }
 
