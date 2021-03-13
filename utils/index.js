@@ -38,7 +38,6 @@ fs.readdirSync(__dirname).forEach(f => {
     require(__dirname + '/' + f)
 })
 
-
 global.render = (path, data) => {
     return ejs.render(fs.readFileSync(__dirname + '/../templates/' + path, 'utf-8'), data, {
         outputFunctionName: "echo",

@@ -1,2 +1,1 @@
-# web
-## Created by Manh Vu
+# Created by Manh Vu

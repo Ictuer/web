@@ -17,4 +17,11 @@ User.BelongsToMany("User").Pivot(User)
 
 web.export()
 
+web.clearOutput()
+
+Log(web.view("admin/index.js"))
+Log(web.view("admin/edit.js"))
+Log(web.controller("admin/controller.js"))
+
+
 
