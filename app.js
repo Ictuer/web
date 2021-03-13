@@ -9,10 +9,9 @@ User.Integer('age').NotNull()
 User.DateTime('created_at')
 User.DateTime('updated_at')
 User.BelongsTo('Role')
-User.Fillable(["username", "password", "age"])
-
-
 User.BelongsToMany("Comment")
+
+User.Fillable(["username", "password", "age"])
 
 web.export()
 
